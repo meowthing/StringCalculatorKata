@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
@@ -24,8 +23,7 @@ namespace StringCalculator
                 string negatives = splitNumbers
                     .Where(number => number < 0)
                     .Select(number => number.ToString())
-                    .Aggregate((numberA, numberB) => string.Format("{0}, {1}", numberA, numberB))
-                    ;
+                    .Aggregate((numberA, numberB) => string.Format("{0}, {1}", numberA, numberB));
                 throw new ArgumentException($"negatives not allowed {negatives}");
             }
 
