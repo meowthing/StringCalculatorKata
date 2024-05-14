@@ -58,9 +58,11 @@ namespace StringCalculatorTests
         }
 
         [Test]
-        public void TestNoNegativesAllowed()
+        [TestCase("-2")]
+        [TestCase("-2, -100")]
+        public void TestNoNegativesAllowed(string negatives)
         {
-            Assert.That(() => calculator.Add("-2"), Throws.ArgumentException);
+            Assert.That(() => calculator.Add(negatives), Throws.ArgumentException);
         }
     }
 }

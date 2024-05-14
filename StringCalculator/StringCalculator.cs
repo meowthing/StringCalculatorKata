@@ -14,24 +14,24 @@ namespace StringCalculator
                 return 0;
             }
 
-            // Sanitize input by only having numbers and commas
+            // Sanitize input by only having signed numbers and commas
             numbers = Regex.Replace(numbers, "[^0-9-,]", ",");
-            List<string> splitNumbersStr = numbers.Split(",").ToList();
-            splitNumbersStr.RemoveAll(s => string.IsNullOrEmpty(s));
-
-            List<int> splitNumbersInt = splitNumbersStr.Select(number => int.Parse(number)).ToList();
+            List<int> splitNumbers = numbers.Split(",").Select(numbers => !string.IsNullOrEmpty(numbers) ? int.Parse(numbers) : 0).ToList();
 
             // Negatives are not allowed
-            List<int> negatives = splitNumbersInt.Where(number => number < 0).ToList();
-            if (negatives.Any())
+            if (splitNumbers.Any(number => number < 0))
             {
-                throw new ArgumentException($"negatives not allowed {negatives.Select(number => number)}");
+                string negatives = splitNumbers
+                    .Where(number => number < 0)
+                    .Select(number => number.ToString())
+                    .Aggregate((numberA, numberB) => string.Format("{0}, {1}", numberA, numberB))
+                    ;
+                throw new ArgumentException($"negatives not allowed {negatives}");
             }
 
             // Numbers over 1000 are ignored
-            int result = splitNumbersInt.Where(number => number <= 1000).Sum();
+            int result = splitNumbers.Where(number => number <= 1000).Sum();
             return result;
-
         }
     }
 }
